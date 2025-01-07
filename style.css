@@ -1,13 +1,8 @@
-/* .roboto-regular {
-  font-family: 'Roboto', serif;
-  font-weight: 400;
-  font-style: normal;
-} */
-
 body {
   font-family: 'Roboto', serif;
   font-weight: 400;
   font-style: normal;
+  font-size: 48px;
 }
 
 .main-window {
@@ -27,8 +22,27 @@ body {
 .button {
   color: white;
   background-color: #6d6d6d;
-  outline: 1px solid tomato;
+  border: none;
   border-radius: 100%;
+}
+
+.zero-div {
+  width: 20px;
+  padding-left: 20px;
+}
+
+.button.yellow {
+  background-color: #ffb800;
+}
+
+.button.grey {
+  background-color: #aeaeae;
+}
+
+.button:active {
+  transform: scale(0.95);
+  background-color: #6d6d6d7e;
+  transition: transform 50ms ease-out;
 }
 
 .wrapper {
@@ -37,9 +51,11 @@ body {
   grid-template-rows: repeat(5, 80px);
   row-gap: 7px;
   column-gap: 7px;
+  justify-content: center;
 }
 
 .zero {
   grid-column-start: 1;
   grid-column-end: 3;
+  border-radius: 140px;
 }
