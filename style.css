@@ -28,6 +28,10 @@ body {
   border-radius: 100%;
 }
 
+.button:hover {
+  background-color: #323232;
+}
+
 .zero-div {
   width: 20px;
   padding-left: 20px;
@@ -37,8 +41,16 @@ body {
   background-color: #ffb800;
 }
 
+.button.yellow:hover {
+  background-color: #dd8e05;
+}
+
 .button.grey {
   background-color: #aeaeae;
+}
+
+.button.grey:hover {
+  background-color: #323232;
 }
 
 .button:active {
