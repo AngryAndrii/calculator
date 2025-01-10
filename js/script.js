@@ -1,48 +1,51 @@
-import { topBoard, resultBoard, wrapper } from './screens.js';
+import { topBoard, resultBoard, wrapper } from "./screens.js";
 
-let firstNum = '';
-let secondNum = '';
-let operation = '';
+let firstNum = "";
+let secondNum = "";
+let operation = "";
 
-const numberArr = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'];
-const symbolsArr = ['+/-', '%', '/', 'x', '-', '+', '='];
+const numberArr = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "."];
+const symbolsArr = ["+/-", "%", "/", "x", "-", "+", "="];
 
 const allClear = () => {
-  resultBoard.innerHTML = '';
-  firstNum = '';
-  secondNum = '';
-  operation = '';
+  resultBoard.innerHTML = "";
+  firstNum = "";
+  secondNum = "";
+  operation = "";
 };
 
-wrapper.addEventListener('click', (e) => {
+wrapper.addEventListener("click", (e) => {
   const clickTarget = e.target.dataset.symbol;
   switch (clickTarget) {
-    case 'ac':
+    case "ac":
       allClear();
       break;
-    case '=':
+    case "=":
       switch (operation) {
-        case '+':
-          console.log('+');
+        case "+":
           let result = +firstNum + +secondNum;
           console.log(result);
+          resultBoard.innerHTML = +result;
+          break;
+        case "-":
+          result = +firstNum - +secondNum;
           resultBoard.innerHTML = +result;
           break;
       }
   }
 
   if (numberArr.includes(clickTarget)) {
-    if (secondNum === '' && operation === '') {
+    if (secondNum === "" && operation === "") {
       firstNum += e.target.dataset.symbol;
-      resultBoard.innerHTML = firstNum;
+      resultBoard.textContent = firstNum;
     }
-    if (firstNum !== '' && operation !== '') {
+    if (firstNum !== "" && operation !== "") {
       secondNum += e.target.dataset.symbol;
-      resultBoard.innerHTML += secondNum;
+      resultBoard.textContent = secondNum;
     }
   }
-  if (symbolsArr.includes(clickTarget) && operation === '') {
+  if (symbolsArr.includes(clickTarget) && operation === "") {
     operation = clickTarget;
-    resultBoard.innerHTML += operation;
+    resultBoard.textContent = operation;
   }
 });
