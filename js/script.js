@@ -1,62 +1,117 @@
-import { topBoard, resultBoard, wrapper } from './screens.js';
+import { topBoard, resultBoard, wrapper } from "./screens.js";
 
-let firstNum = '';
-let secondNum = '';
-let operation = '';
-let result = 0;
-let isPercent = false;
+const numberArr = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "."];
+const symbolsArr = ["+/-", "%", "/", "x", "-", "+", "="];
 
-const numberArr = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'];
-const symbolsArr = ['+/-', '%', '/', 'x', '-', '+', '='];
-
-const allClear = () => {
-  resultBoard.innerHTML = '';
-  firstNum = '';
-  secondNum = '';
-  operation = '';
-  result = 0;
+const screenObj = {
+  firstNum: "",
+  secondNum: "",
+  operation: "",
+  isPercent: false,
+  result: 0,
+  isFinish: false,
 };
 
-wrapper.addEventListener('click', (e) => {
-  const clickTarget = e.target.dataset.symbol;
+const render = (data) => {
+  const { firstNum, operation, secondNum } = data;
+  topBoard.innerHTML = `${firstNum}${operation}${secondNum}`;
+  resultBoard.innerHTML = data.result;
+};
+
+const allClear = () => {
+  screenObj.firstNum = "";
+  screenObj.secondNum = "";
+  screenObj.operation = "";
+  screenObj.isPercent = false;
+  screenObj.result = 0;
+  screenObj.isFinish = false;
+  render(screenObj);
+};
+
+wrapper.addEventListener("click", (e) => {
+  let clickTarget = e.target.dataset.symbol;
   switch (clickTarget) {
-    case 'ac':
+    case "ac":
       allClear();
       break;
-    case '=':
-      switch (operation) {
-        case '+':
-          result = +firstNum + +secondNum;
-          console.log(result);
-          resultBoard.innerHTML = +result;
+    case "=":
+      switch (screenObj.operation) {
+        case "+":
+          screenObj.result = +screenObj.firstNum + +screenObj.secondNum;
+          render(screenObj);
           break;
-        case '-':
-          result = +firstNum - +secondNum;
-          resultBoard.innerHTML = +result;
+        case "-":
+          screenObj.result = +screenObj.firstNum - +screenObj.secondNum;
+          render(screenObj);
           break;
-        case 'x':
-          result = +firstNum * +secondNum;
-          resultBoard.innerHTML = +result;
+        case "x":
+          screenObj.result = +screenObj.firstNum * +screenObj.secondNum;
+          render(screenObj);
           break;
-        case '/':
-          result = +firstNum / +secondNum;
-          resultBoard.innerHTML = +result;
+        case "/":
+          screenObj.result = +screenObj.firstNum / +screenObj.secondNum;
+          render(screenObj);
           break;
       }
   }
 
-  if (numberArr.includes(clickTarget)) {
-    if (secondNum === '' && operation === '') {
-      firstNum += e.target.dataset.symbol;
-      resultBoard.textContent = firstNum;
+  const calcPercents = () => {
+    if (
+      screenObj.firstNum !== "" &&
+      screenObj.secondNum === "" &&
+      screenObj.operation === ""
+    ) {
+      screenObj.firstNum = +screenObj.firstNum * 0.01;
+      screenObj.result = +screenObj.firstNum;
+      console.log(screenObj.result);
     }
-    if (firstNum !== '' && operation !== '') {
-      secondNum += e.target.dataset.symbol;
-      resultBoard.textContent = secondNum;
+    if (
+      screenObj.firstNum !== "" &&
+      screenObj.secondNum !== "" &&
+      screenObj.operation !== ""
+    ) {
+      screenObj.secondNum *= 0.01;
+      switch (screenObj.operation) {
+        case "+":
+          screenObj.result = +screenObj.firstNum + +screenObj.secondNum;
+          render(screenObj);
+          break;
+        case "-":
+          screenObj.result = +screenObj.firstNum - +screenObj.secondNum;
+          render(screenObj);
+          break;
+        case "x":
+          screenObj.result = +screenObj.firstNum * +screenObj.secondNum;
+          render(screenObj);
+          break;
+        case "/":
+          screenObj.result = +screenObj.firstNum / +screenObj.secondNum;
+          render(screenObj);
+          break;
+      }
+    }
+    render(screenObj);
+  };
+
+  if (numberArr.includes(clickTarget)) {
+    if (screenObj.secondNum === "" && screenObj.operation === "") {
+      screenObj.firstNum += e.target.dataset.symbol;
+      render(screenObj);
+    }
+    if (screenObj.firstNum !== "" && screenObj.operation !== "") {
+      screenObj.secondNum += e.target.dataset.symbol;
+      render(screenObj);
     }
   }
-  if (symbolsArr.includes(clickTarget) && operation === '') {
-    operation = clickTarget;
-    resultBoard.textContent = operation;
+  if (
+    symbolsArr.includes(clickTarget) &&
+    screenObj.operation === "" &&
+    clickTarget !== "%"
+  ) {
+    screenObj.operation = clickTarget;
+    render(screenObj);
+  }
+  if (symbolsArr.includes(clickTarget) && clickTarget === "%") {
+    calcPercents();
   }
 });
