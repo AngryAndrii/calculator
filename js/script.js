@@ -1,6 +1,6 @@
 import { topBoard, resultBoard, wrapper } from "./screens.js";
 
-const numberArr = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "."];
+const numberArr = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 const symbolsArr = ["+/-", "%", "/", "x", "-", "+", "="];
 
 const screenObj = {
@@ -10,6 +10,8 @@ const screenObj = {
   isPercent: false,
   result: 0,
   isFinish: false,
+  isFirstDecimal: false,
+  isSecondDecimal: false,
 };
 
 const render = (data) => {
@@ -38,18 +40,23 @@ wrapper.addEventListener("click", (e) => {
       switch (screenObj.operation) {
         case "+":
           screenObj.result = +screenObj.firstNum + +screenObj.secondNum;
+          screenObj.result.toFixed(3);
           render(screenObj);
           break;
         case "-":
-          screenObj.result = +screenObj.firstNum - +screenObj.secondNum;
+          screenObj.result = (
+            +screenObj.firstNum - +screenObj.secondNum
+          ).toFixed(3);
           render(screenObj);
           break;
         case "x":
           screenObj.result = +screenObj.firstNum * +screenObj.secondNum;
+          screenObj.result.toFixed(3);
           render(screenObj);
           break;
         case "/":
           screenObj.result = +screenObj.firstNum / +screenObj.secondNum;
+          screenObj.result.toFixed(3);
           render(screenObj);
           break;
       }
@@ -74,18 +81,22 @@ wrapper.addEventListener("click", (e) => {
       switch (screenObj.operation) {
         case "+":
           screenObj.result = +screenObj.firstNum + +screenObj.secondNum;
+          screenObj.result.toFixed(3);
           render(screenObj);
           break;
         case "-":
           screenObj.result = +screenObj.firstNum - +screenObj.secondNum;
+          screenObj.result.toFixed(3);
           render(screenObj);
           break;
         case "x":
           screenObj.result = +screenObj.firstNum * +screenObj.secondNum;
+          screenObj.result.toFixed(3);
           render(screenObj);
           break;
         case "/":
           screenObj.result = +screenObj.firstNum / +screenObj.secondNum;
+          screenObj.result.toFixed(3);
           render(screenObj);
           break;
       }
@@ -113,5 +124,18 @@ wrapper.addEventListener("click", (e) => {
   }
   if (symbolsArr.includes(clickTarget) && clickTarget === "%") {
     calcPercents();
+  }
+  if (clickTarget === ".") {
+    if (
+      screenObj.secondNum === "" &&
+      screenObj.operation === "" &&
+      screenObj.isFirstDecimal === false
+    ) {
+      screenObj.firstNum += e.target.dataset.symbol;
+      render(screenObj);
+      screenObj.isFirstDecimal = true;
+    } else {
+      return;
+    }
   }
 });
