@@ -122,7 +122,7 @@ wrapper.addEventListener("click", (e) => {
     screenObj.operation = clickTarget;
     render(screenObj);
   }
-  if (symbolsArr.includes(clickTarget) && clickTarget === "%") {
+  if (clickTarget === "%") {
     calcPercents();
   }
   if (clickTarget === ".") {
@@ -134,6 +134,15 @@ wrapper.addEventListener("click", (e) => {
       screenObj.firstNum += e.target.dataset.symbol;
       render(screenObj);
       screenObj.isFirstDecimal = true;
+    }
+    if (
+      screenObj.firstNum !== "" &&
+      screenObj.operation !== "" &&
+      screenObj.isSecondDecimal === false
+    ) {
+      screenObj.secondNum += e.target.dataset.symbol;
+      render(screenObj);
+      screenObj.isSecondDecimal = true;
     } else {
       return;
     }
